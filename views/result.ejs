@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../public/lib/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="../public/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../public/lib/dt/datatables-bs4/css/dataTables.bootstrap4.css">
+    <title>Result Checker</title>
+</head>
+
+<body style="background-color: #eee;">
+    
+    <div class="container">
+        <div class="card mt-5 mb-5">
+
+            <div class="">
+                <img src="/public/images/header.png" alt="" srcset="" class="w-100" />
+            </div>
+
+            <% if (student.length != 0) { %>
+                <div class="card-header bg-transparent">
+
+                    <div class="row p-2">
+                        <h6 class="col-4">NAME</h6>
+                        <h5 class=" col-8">
+                            <%= student.fname %>
+                        </h5>
+                    </div>
+
+                    <div class="row p-2">
+                        <h6 class="col-4">ROLL ID:</h6>
+                        <h5 class=" col-8">
+                            <%= student.rollId %>
+                        </h5>
+                    </div>
+
+                    <div class="row p-2">
+                        <h6 class="col-4">CLASS:</h6>
+                        <h5 class=" col-8">
+                            <%= student.sclass %>
+                        </h5>
+                    </div>
+                </div>
+                <div class=" card-body">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <th>#</th>
+                            <th>Subject</th>
+                            <th>Score</th>
+                            <th>Grade</th>
+                        </thead>
+                        <tbody>
+                            <% student.result.forEach(subject => { %>
+                                <% const pos = student.result.indexOf(subject) %>
+                                    <tr>
+                                        <td>
+                                            <%= pos + 1 %>
+                                        </td>
+                                        <td>
+                                            <%= subject.subject %>
+                                        </td>
+                                        <td class="text-center">
+                                            <p><%= subject.score %></p>
+                                        </td>
+                                        <td class="text-center"><h6><%= subject.grade %></h6></td>
+                                    </tr>
+                                    <% }) %>
+                        </tbody>
+                        <tfoot>
+                            <td colspan="2"><h4 class=" text-center">Total</h4></td>
+                            <td>
+                                <% let Total = 0 %>
+                            <% student.result.forEach(subject => Total = Total + subject.score)%>
+                            <h4><%= Total %></h4>
+
+                            </td>
+                            <td></td>
+                        </tfoot>
+                    </table>
+                    <div class="container-fluid footer mt-5">
+                        <div class="d-flex">
+                            <div class="w-50">
+                                <div class="d-flex align-items-end">
+                                    <h6 class="">OVER ALL PERCENTANGE: </h6>
+                                    <div class=" border-dark border-bottom w-50 text-center"><h6 class="">X%</h6></div>
+                                </div>
+                            </div>
+                            <div class="w-50">
+                                <div class="d-flex align-items-end">
+                                    <h6 class="">REMARK: </h6>
+                                    <div class=" border-dark border-bottom w-100"></div>
+                                </div>
+                            </div>
+                        </div>
+                            
+                        <div class="d-flex align-items-end mt-3">
+                            <h6>CLASS TEACHER REMARK: </h6>
+                            <div class="w-100 border-bottom border-dark"></div>
+                        </div>
+                        <div class="d-flex align-items-end pt-4">
+                            <h6>COMMENT: </h6>
+                            <div class="w-100 border-bottom border-dark"></div>
+                        </div>
+
+                        <div class="d-flex mt-5 pt-5">
+                            <div class="border-dark border-top col-4 text-center">
+                                <h5  class="m-0 p-0">Alh. Nurein Moibi</h5>
+                                <p>Propietor</p>
+                            </div>
+                            
+                            <div class="border-dark border-top col-4 offset-4 text-center">
+                                <h5 class=" m-0 p-0">Mrs. Nurein Kafayat</h5>
+                                <p>Principal</p>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <% } else{ %>
+
+                    <% } %>
+
+        </div>
+    </div>
+
+
+    <script src="../public/lib/jquery//jquery.min.js "></script>
+    <script src="../public/lib/bootstrap/js/bootstrap.min.js "></script>
+
+    <!-- datatable -->
+    <script src="../public/lib/dt/datatables/jquery.dataTables.js"></script>
+    <script src="../public/lib/dt/datatables-bs4/js/dataTables.bootstrap4.js"></script>
+    <script src="../public/lib/dt/datatables-responsive/js/dataTables.responsive.js"></script>
+    <script>
+        $(function() {
+            $('table').DataTable({
+                paging: false,
+                lengthChange: false,
+                searching: false,
+                ordering: false,
+                info: false,
+                autoWidth: false,
+                responsive: true,
+            })
+        })
+    </script>
+</body>
+
+</html>

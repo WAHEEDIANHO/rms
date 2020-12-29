@@ -1,0 +1,76 @@
+body {
+  background-color: rgb(236, 234, 234);
+}
+
+header {
+  box-shadow: 0px 3px 10px #242222;
+}
+
+.navPanel {
+  /* width: 300px; */
+  height: 100vh;
+  transition: all 1s;
+  position: fixed;
+}
+.nav-link ~ ul {
+  display: none;
+}
+
+.nav-link ~ ul li {
+  padding: 5px;
+}
+
+li,
+section a {
+  color: white;
+  list-style: none;
+}
+
+.main .d-flex {
+  border-radius: 5px;
+}
+
+.main .d-flex i {
+  color: rgba(252, 252, 252, 0.3);
+}
+
+.flash {
+  display: none;
+  justify-content: center;
+}
+#message {
+  padding: 13px 5px 5px;
+  font-size: 14px;
+}
+
+#err {
+  display: none;
+  text-align: center;
+  color: red;
+}
+
+#feedback {
+  display: none;
+}
+.smallSidebar {
+  display: block !important;
+  z-index: 2;
+  width: 50%;
+}
+#menu {
+  display: none;
+}
+
+@media (max-width: 766px) {
+  .srmsadmin {
+    display: none;
+  }
+}
+@media (max-width: 991px) {
+  .navPanel {
+    display: none;
+  }
+  #menu {
+    display: block;
+  }
+}

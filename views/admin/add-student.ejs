@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/head') %>
+
+    <body>
+        <div class="container-fluid">
+            <%- include('partials/header') %>
+                <section class="row">
+                    <%- include('partials/nav') %>
+
+                        <div class="content offset-lg-3 col-lg-9 col-md-12 p-0 ">
+                            <div class="w-100 p-2 bg-white mt-2 mb-2">
+                                <h3 class=" modal-header">Student Admission</h3>
+                                <div class="breadcrumb bg-transparent p-0">
+                                    <div class="breadcrumb-item">Home</div>
+                                    <div class="breadcrumb-item">Students</div>
+                                    <div class="breadcrumb-item">Student Admission</div>
+                                </div>
+                            </div>
+                            <div class="card m-2 p-3">
+                                <div class=" modal-header mb-2">
+                                    <h5>For already typed Students</h5>
+                                    <a href="../../public/template/file-1603218526224.xlsx" class="btn btn-success" download>Download Template</a>
+                                </div>
+                                <div class="alert alert-success alert-dismissible fade show" role="alert" id="feedback">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                    <strong>FIle upload successfully</strong>
+                                </div>
+                                <form action="/admin/add-student" class="dropzone" id="upload-widget" enctype="multipart/form-data"></form>
+                            </div>
+
+                            <div class="card m-2 p-3">
+
+                                <h5>Fill the student info</h5>
+                                <%- include('partials/flash') %>
+                                    <h4 id="err">Fill the corresponding value below</h4>
+
+                                    <form action="" method="POST" class="">
+                                        <div class="form-row m-3">
+                                            <label for="fname" class="col-2">Full Name: </label>
+                                            <div class="col-10">
+                                                <input type="text" name="fname" id="fname" class="form-control">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row m-3">
+                                            <label for="rollId" class="col-2">Roll ID: </label>
+                                            <div class="col-10">
+                                                <input type="text" name="rollId" id="rollId" class="form-control">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row m-3">
+                                            <label for="Email" class="col-2">Email: </label>
+                                            <div class="col-10">
+                                                <input type="email" name="email" id="email" class="form-control">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row m-3">
+                                            <label for="gender" class="col-2">Gender: </label>
+                                            <div class="col-10">
+                                                <input type="radio" name="gender" id="gender" value="male">Male
+                                                <input type="radio" name="gender" id="gender" value="female">Female
+                                                <input type="radio" name="gender" id="gender" value="other">Other
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row m-3">
+                                            <label for="class" class="col-2">Class: </label>
+                                            <div class="col-10">
+                                                <select name="class" id="sclass" class="form-control">
+                                                    <option value="">Select class</option>
+                                                    <% classes.forEach(element=> { %>
+                                                        <option value="<%= element.cnameNum %>" class="rmd">
+                                                            <%= element.cname %>
+                                                        </option>
+                                                        <% }) %>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row m-3">
+                                            <label for="dob" class="col-2">DOB: </label>
+                                            <div class="col-10">
+                                                <input type="date" name="dob" id="dob" class="form-control">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row m-3">
+                                            <label for="number" class="col-2">Phone No: </label>
+                                            <div class="col-10">
+                                                <input type="tel" name="phone_no" id="phone_no" class="form-control">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row m-3">
+                                            <label for="address" class="col-2">Address: </label>
+                                            <div class="col-10">
+                                                <input type="text" name="address" id="address" class="form-control">
+                                            </div>
+                                        </div>
+
+                                        <button type="button" class="btn btn-success float-right" id="formSubmit">Add</button>
+
+                                    </form>
+                            </div>
+                        </div>
+                </section>
+        </div>
+
+        <script src="../../public/lib/jquery//jquery.min.js "></script>
+        <script src="../../public/lib/bootstrap/js/bootstrap.min.js "></script>
+        <script src="../../public/lib/dropzone-5.7.0/dist/dropzone.js"></script>
+        <script src="../../public/js/admin.js"></script>
+
+        <script>
+            $(document).ready(() => {
+                $('#formSubmit').on('click', function() {
+                    let fname = $('#fname').val().toString().toUpperCase(),
+                        rollId = $('#rollId').val(),
+                        email = $('#email').val(),
+                        gender = $('#gender').val(),
+                        sclass = $('#sclass').val(),
+                        address = $('#address').val(),
+                        phone_no = $('#phone_no').val(),
+                        dob = $('#dob').val();
+
+                    if ((fname.length && rollId.length && email.length && gender.length && sclass.length && dob.length) === 0) {
+                        $('#err').css({
+                            display: "block",
+                        })
+                    } else {
+                        $.post('/admin/add-student', {
+                            fname: fname,
+                            rollId: rollId,
+                            email: email,
+                            gender: gender,
+                            sclass: sclass,
+                            address: address,
+                            phone_no: phone_no,
+                            dob: dob
+                        }, (data) => {
+                            $('.flash').css({
+                                display: 'flex'
+                            })
+                            console.log(data)
+                            $('#fname').val("")
+                            $('#rollId').val("")
+                            $('#email').val("")
+                            $('#sclass').val("")
+                            $('#dob').val("")
+                            $('#phone_no').val("")
+                            $('#address').val("")
+                        })
+                    }
+
+                })
+
+                $('input').on('focus', () => {
+                    if ($('#err').css('display') != "none" || $('.alert').css('display') != "none") {
+                        console.log('err display')
+                        $('#err').hide()
+                        $('.alert').hide()
+                    }
+                })
+            })
+
+            Dropzone.options.uploadWidget = {
+                    maxFiles: 1,
+                    dictDefaultMessage: 'Upload ur xlsx file here',
+                    acceptedFiles: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                    init: function() {
+                        this.on("success", function(file, responseText) {
+                            // alert("Added file");
+                            console.log(responseText)
+                            this.removeFile(file)
+                            $('#feedback').removeAttr('id')
+                        });
+                    }
+                }
+                // $('#dn').on('click', '[download]', function(e) {
+                //     e.preventDefault();
+                //     download($(this).attr('href'));
+                // });
+        </script>
+    </body>
+
+</html>

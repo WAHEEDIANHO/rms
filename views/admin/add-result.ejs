@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/head') %>
+
+    <body>
+        <div class="container-fluid">
+            <%- include('partials/header') %>
+                <section class="row">
+                    <%- include('partials/nav') %>
+
+                        <div class="content col-lg-9 col-md-12 p-0 ">
+                            <div class="w-100 p-2 bg-white mt-2 mb-2">
+                                <h3 class=" modal-header">Declare Result </h3>
+                                <div class="breadcrumb bg-transparent p-0">
+                                    <div class="breadcrumb-item">Home</div>
+                                    <div class="breadcrumb-item">Result</div>
+                                    <div class="breadcrumb-item">Add Result</div>
+                                </div>
+                            </div>
+                            <div class="card m-2 p-3">
+                                <div class=" modal-header mb-2">
+                                    <h5>For already typed Results</h5>
+                                    <a href="../../public/template/file-1603218526224.xlsx" class="btn btn-success" download>Download Template</a>
+                                </div>
+
+                                <div class="alert alert-success alert-dismissible fade show" role="alert" id="feedback">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                    <strong>FIle upload successfully</strong>
+                                </div>
+                                <form action="/admin/add-result" class="dropzone" id="upload-widget" enctype="multipart/form-data"></form>
+                            </div>
+
+                            <div class="card m-2 p-3">
+
+                                <h5>Declare a Result</h5>
+                                <%- include('partials/flash') %>
+                                    <h4 id="err">Fill the corresponding value below</h4>
+
+                                    <form action="" method="POST" class="">
+                                        <div class="form-row m-3">
+                                            <label for="sclass" class="col-2">Class: </label>
+                                            <div class="col-10">
+
+
+                                                <select name="sclass" id="sclass" class="form-control">
+                                                    <option value="">Select class</option>
+                                                    <% classes.forEach(element => { %>
+                                                        <option value="<%= element.cnameNum %>" class="rmd"> <%= element.cname %> </option>
+                                                        <% }) %>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row m-3">
+                                            <label for="sname" class="col-2">Student Name: </label>
+                                            <div class="col-10">
+                                                <select name="sname" id="sname" class="form-control">
+                                                    <option value="">Select Student</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row m-3">
+                                            <div class="col-7">
+                                                <div class="row">
+                                                    <label for="subject" class="col-2">Subjet: </label>
+                                                    <div class="col-10">
+                                                        <select name="subject" id="subject" class="form-control">
+                                                             <option value="">Select Subject</option>
+                                                             <% subjects.forEach(element => { %>
+                                                                <option value="<%= element.sname %>"> <%= element.sname %> </option>
+                                                                <% }) %>
+                                                         </select>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="col-5">
+                                                <div class="row">
+                                                    <label for="score" class="col-4 text-center">Score: </label>
+                                                    <div class="col-8">
+                                                        <input type="number" class='form-control' name='score' id="score">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+
+                                        <button type="button" class="btn btn-success float-right" id="formSubmit">Add</button>
+
+                                    </form>
+                            </div>
+                        </div>
+                </section>
+        </div>
+
+        <script src="../../public/lib/jquery//jquery.min.js "></script>
+        <script src="../../public/lib/bootstrap/js/bootstrap.min.js "></script>
+        <script src="../../public/lib/dropzone-5.7.0/dist/dropzone.js"></script>
+        <script src="../../public/js/admin.js"></script>
+        <script src="/public/js/ajax.js"></script>
+        <script>
+            // console.log(students)
+            $(document).ready(() => {
+
+                $("select, input").on('focus', () => {
+                    if ($('#err').css('display') != "none" || $('.flash').css('display') != "none") {
+                        console.log('err display')
+                        $('#err').hide()
+                        $('.alert').hide()
+                    }
+                })
+                $('#formSubmit').on('click', function() {
+                    let sclass = $('#sclass').val()
+                    sname = $('#sname').val(),
+                        subject = $('#subject').val(),
+                        score = $('#score').val(),
+                        flash = $('.flash')
+                    console.log(typeof score)
+                    if ((sclass.length && 
+                        sname.length && 
+                        subject.length && 
+                        score.length) === 0) {
+                        $('#err').css({
+                            display: "block",
+                        })
+                    } else {
+                        $.post('/admin/add-result', {
+                            sclass: sclass,
+                            sname: sname,
+                            subject: subject,
+                            score: score,
+
+                        }, (data) => {
+                            const successMessage = `<strong>${subject}<strong/> result for <strong>${sname}<strong/> uploaded successfully`
+                            data.status == 404 ? (
+                                flash.css({
+                                    display: 'flex'
+                                }).removeClass('alert-sucess').addClass('alert-danger') &&
+                                $('#message').html(data.message)
+                            ):(
+                                flash.css({
+                                        display: 'flex'
+                                    }) &&
+                                    $('#message').html(successMessage)
+                            );
+                            
+                            console.log(data)
+                            $('#sclass').val("");
+                            $('#sname').val("");
+                            $('#subject').val("");
+                            $('#score').val("");
+                        })
+                    }
+                })
+
+            })
+
+            //-----------------DropZone------------------------
+            Dropzone.options.uploadWidget = {
+                    maxFiles: 1,
+                    dictDefaultMessage: 'Upload ur xlsx file here',
+                    acceptedFiles: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                    init: function() {
+                        this.on("success", function(file, responseText) {
+                            // alert("Added file");
+                            this.removeFile(file)
+                            $('#feedback').removeAttr('id')
+                            console.log(responseText)
+                        });
+                    }
+                }
+                //--------------------------------------------------
+
+            // $(".custom-file-input").on("change", function() {
+            //     var fileName = $(this).val().split("\\").pop();
+            //     $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+            // });
+        </script>
+    </body>
+
+</html>
