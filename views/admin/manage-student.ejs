@@ -1,117 +1,140 @@
-<%- include('partials/head')  %>
+<%- include('partials/head') %>
 
-    <body>
-        <div class="container-fluid">
-            <%- include('partials/header') %>
-                <section class="row">
-                    <%- include('partials/nav') %>
-                        <div class="content offset-lg-3 col-lg-9 col-md-12 p-0 ">
-                            <div class="w-100 p-2 bg-white mt-2 mb-2">
-                                <h3 class=" modal-header">Manage Student</h3>
-                                <div class="breadcrumb bg-transparent p-0">
-                                    <div class="breadcrumb-item">Home</div>
-                                    <div class="breadcrumb-item">Subject</div>
-                                    <div class="breadcrumb-item">Manage-Students</div>
-                                </div>
-                            </div>
-
-                            <div class="container-fluid">
-
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h4 class="p-3">View Student Info</h4>
-                                            </div>
-
-                                            <div class=" card-body">
-                                                <table class="table table-bordered table-striped">
-                                                    <thead>
-                                                        <th>#</th>
-                                                        <th>Student Name</th>
-                                                        <th>Roll ID</th>
-                                                        <th>Email</th>
-                                                        <th>Gender</th>
-                                                        <th>Class</th>
-                                                        <th>DOB</th>
-                                                        <th>Craetion Date</th>
-                                                        <th>Modifield Dated</th>
-                                                        <th>Action</th>
-                                                    </thead>
-                                                    <tbody>
-                                                        <% if (docs.length != 0) { %>
-
-                                                            <% docs.forEach(doc => { %>
-                                                                <tr>
-                                                                    <td>
-                                                                        <%= docs.indexOf(doc) + 1 %>
-                                                                    </td>
-                                                                    <td>
-                                                                        <%= doc.fname %>
-                                                                    </td>
-                                                                    <td>
-                                                                        <%= doc.rollId %>
-                                                                    </td>
-                                                                    <td>
-                                                                        <%= doc.email %>
-                                                                    </td>
-                                                                    <td>
-                                                                        <%= doc.gender %>
-                                                                    </td>
-                                                                    <td>
-                                                                        <%= doc.sclass %>
-                                                                    </td>
-                                                                    <td>
-                                                                        <%= doc.dob.toDateString() %>
-                                                                    </td>
-                                                                    <td>
-                                                                        <%= doc.createdAt.toLocaleString() %>
-                                                                    </td>
-                                                                    <td>
-                                                                        <%= doc.updatedAt.toLocaleString() %>
-                                                                    </td>
-                                                                    <td>
-                                                                        <i class="btn btn-info fa fa-edit"></i>
-                                                                        <i class="btn btn-danger fa fa-trash-o"></i>
-                                                                    </td>
-                                                                </tr>
-                                                                <% }) %>
-
-                                                                    <% } else{%>
-                                                                        <p>You have not register any Class</p>
-                                                                        <% } %>
-
-
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                        </div>
-                </section>
+<body>
+  <div class="container-fluid">
+    <%- include('partials/header') %>
+    <section class="row">
+      <%- include('partials/nav') %>
+      <div class="content offset-lg-3 col-lg-9 col-md-12 p-0">
+        <div class="w-100 p-2 bg-white mt-2 mb-2">
+          <h3 class="modal-header">Manage Student</h3>
+          <div class="breadcrumb bg-transparent p-0">
+            <div class="breadcrumb-item">Home</div>
+            <div class="breadcrumb-item">Subject</div>
+            <div class="breadcrumb-item">Manage-Students</div>
+          </div>
         </div>
 
-        <script src="../../public/lib/jquery//jquery.min.js "></script>
-        <script src="../../public/lib/bootstrap/js/bootstrap.min.js "></script>
-        <script src="../../public/js/admin.js"></script>
+        <!-- Modal -->
+        <%- include('../modal/comfirmdelete') %>
 
-        <!-- datatable -->
-        <script src="../../public/lib/dt/datatables/jquery.dataTables.js"></script>
-        <script src="../../public/lib/dt/datatables-bs4/js/dataTables.bootstrap4.js"></script>
-        <script src="../../public/lib/dt/datatables-responsive/js/dataTables.responsive.js"></script>
-        <script>
-            $(function() {
-                $('.btn').on('click', function() {
-                    $('.alert').show()
-                })
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header">
+                  <h4 class="p-3">View Student Info</h4>
+                </div>
 
-                $('table').DataTable({
-                    responsive: true
-                })
-            })
-        </script>
-    </body>
+                <div class="card-body" id="overflow">
+                  <table class="table table-bordered table-striped">
+                    <thead>
+                      <th>#</th>
+                      <th>Student Name</th>
+                      <th>Roll ID</th>
+                      <th>Email</th>
+                      <th>Gender</th>
+                      <th>Class</th>
+                      <th>DOB</th>
+                      <th>Craetion Date</th>
+                      <th>Modifield Dated</th>
+                      <th>Action</th>
+                    </thead>
+                    <tbody>
+                      <% if (docs.length != 0) { %> <% docs.forEach(doc => { %>
+                      <tr>
+                        <td><%= docs.indexOf(doc) + 1 %></td>
+                        <td>
+                          <input
+                            type="text"
+                            name="fname"
+                            value="<%= doc.fname %>"
+                            class="form-control bg-transparent border-0 unclick"
+                            disabled
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            name="rollId"
+                            value="<%= doc.rollId %>"
+                            class="form-control bg-transparent border-0 unclick"
+                            disabled
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="email"
+                            name="email"
+                            value="<%= doc.email %>"
+                            class="form-control bg-transparent border-0 unclick"
+                            disabled
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            name="gender"
+                            value="<%= doc.gender %>"
+                            class="form-control bg-transparent border-0 unclick"
+                            disabled
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            name="sclass"
+                            value="<%= doc.sclass %>"
+                            class="form-control bg-transparent border-0 unclick"
+                            disabled
+                          />
+                        </td>
+                        <td><%= doc.dob.toDateString() %></td>
+                        <td><%= doc.createdAt.toLocaleString() %></td>
+                        <td><%= doc.updatedAt.toLocaleString() %></td>
+                        <td class="text-center actionBtn">
+                          <i
+                            class="btn btn-info fa fa-edit edit"
+                            id="<%= doc._id %>"
+                          ></i>
+                          <i
+                            class="btn btn-danger fa fa-trash-o btn-delete"
+                            data-target="#delete"
+                            data-toggle="modal"
+                            id="<%= doc._id %>"
+                          ></i>
+                        </td>
+                      </tr>
+                      <% }) %> <% } else{%>
+                      <p>You have not register any Class</p>
+                      <% } %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="/public/lib/jquery//jquery.min.js "></script>
+  <script src="/public/lib/bootstrap/js/bootstrap.min.js "></script>
+  <script src="/public/js/ajaxDelete.js"></script>
+  <script src="/public//js/edit.js"></script>
+  <script src="/public/js/admin.js"></script>
+
+  <!-- datatable -->
+  <script src="/public/lib/dt/datatables/jquery.dataTables.js"></script>
+  <script src="/public/lib/dt/datatables-bs4/js/dataTables.bootstrap4.js"></script>
+  <!-- <script src="/public/lib/dt/datatables-responsive/js/dataTables.responsive.js"></script> -->
+  <script>
+    const url = '<%= url %>';
+    $(function () {
+      $('table').DataTable({
+        responsive: true,
+      });
+    });
+  </script>
+</body>

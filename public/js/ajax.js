@@ -22,21 +22,21 @@ $(document).ready(function () {
   });
 });
 
-const fruitBasket = {
-  apple: 27,
-  grape: 0,
-  pear: 14,
-};
+// const fruitBasket = {
+//   apple: 27,
+//   grape: 0,
+//   pear: 14,
+// };
 
-const rest = () => {
-  return new Promise((resolve) => {
-    setTimeout(resolve, 1000);
-  });
-};
+// const rest = () => {
+//   return new Promise((resolve) => {
+//     setTimeout(resolve, 1000);
+//   });
+// };
 
-const getFruitNum = (fruit) => {
-  return rest().then((v) => fruitBasket[fruit]);
-};
+// const getFruitNum = (fruit) => {
+//   return rest().then((v) => fruitBasket[fruit]);
+// };
 
 // getFruitNum("apple").then((num) => console.log(num))
 
