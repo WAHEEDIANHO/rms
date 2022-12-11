@@ -29,7 +29,7 @@ const subjectSchema = new Schema(
       required: true,
     },
     scode: {
-      type: Number,
+      type: String,
       unique: true,
       required: true,
     },

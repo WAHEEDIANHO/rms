@@ -47,13 +47,18 @@ logout = (req, res) => {
 };
 
 createAdmin = (req, res, next) => {
-  req.body.pswrd = Staff.hashPswrd(req.body.pswrd);
-  console.log(req.body.pswrd);
-  Staff.create(req.body)
-    .then(user => {
-      res.json(user);
-    })
-    .catch(err => next(err));
+  console.log(req.body)
+  // req.body.pswrd = Staff.hashPswrd(req.body.pswrd);
+  console.log('password', req.body.pswrd);
+
+  Staff.register({username: req.body.email, ...req.body}, req.body.pswrd, (err, staff) => {
+    if(!err) return res.json(staff);
+    else next(err)
+  })
+//     .then(user => {
+//       res.json(user);
+//     })
+//     .catch(err => next(err));
 };
 
 module.exports = {

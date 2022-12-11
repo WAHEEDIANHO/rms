@@ -15,7 +15,7 @@ $(document).ready(function () {
     });
   });
 
-  $(".alert").fadeOut(3000);
+  $(".alert").fadeOut(10000);
 
   //==================SIDE BAR===============================
   $("#menu").click(function () {

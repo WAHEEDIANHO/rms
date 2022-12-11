@@ -52,7 +52,7 @@
             $(document).ready(() => {
                 $('.btn').on('click', function() {
                     let sname = $('#sname').val().toString().toUpperCase(),
-                        scode = $('#scode').val(),
+                        scode = $('#scode').val().toString().toUpperCase(),
                         flash = $('.flash'),
                         message = $('#message')
 
